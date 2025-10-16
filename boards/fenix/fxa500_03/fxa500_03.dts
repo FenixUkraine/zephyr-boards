@@ -661,11 +661,13 @@ zephyr_udc0: &usb {
 	pinctrl-names = "default";
 	current-speed = <115200>;
 	hw-flow-control;
-	//status = "okay";
-    //atble: atble {
-    //    compatible = "virtual,atble-uart";
-    //    status = "okay";
-    //};
+	status = "okay";
+	esp_wifi: esp-wifi {
+		compatible = "espressif,esp-at";
+		// power-gpios = <&gpiod 4 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+		power-gpios = <&gpiod 4 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+		status = "okay";
+	};
 };
 
 
