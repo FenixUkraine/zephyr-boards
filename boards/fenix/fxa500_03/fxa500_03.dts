@@ -313,7 +313,7 @@ zephyr_udc0: &usb {
 	pinctrl-names = "default";
 	clocks = <&rcc STM32_CLOCK_BUS_APB1_2 0x00000200>,
 		 <&rcc STM32_SRC_PLL1_Q FDCAN_SEL(1)>;
-	clk-divider = <2>;
+	clk-divider = <1>;
 	phys = <&transceiver1>;
 	status = "okay";
 };
@@ -323,7 +323,7 @@ zephyr_udc0: &usb {
 	pinctrl-names = "default";
 	clocks = <&rcc STM32_CLOCK_BUS_APB1_2 0x00000200>,
 		 <&rcc STM32_SRC_PLL1_Q FDCAN_SEL(1)>;
-	clk-divider = <2>;
+	clk-divider = <1>;
 	phys = <&transceiver2>;
 	status = "okay";
 };
