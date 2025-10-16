@@ -1,0 +1,6 @@
+name: zephyr-boards
+build:
+  cmake-ext: True
+  kconfig-ext: True
+  settings:
+    board_root: .
