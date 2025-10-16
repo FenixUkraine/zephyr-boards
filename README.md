@@ -6,7 +6,7 @@
 manifest:
   remotes:
     - name: FenixUkraine
-      url-base: https://github.com/FenixUkraine/zephyr-boards.git
+      url-base: https://github.com/FenixUkraine
   projects:
     - name: zephyr-boards
       remote: FenixUkraine
