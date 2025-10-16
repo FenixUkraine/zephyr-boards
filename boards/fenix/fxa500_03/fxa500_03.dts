@@ -32,7 +32,7 @@
 		// shock-sensor = &shock_sensor;
 	};
 
-	/*
+
 	transceiver1: can-phy1 {
 		compatible = "microchip,mcp2562fd", "can-transceiver-gpio";
 		standby-gpios = <&gpiob 7 GPIO_ACTIVE_LOW>;
@@ -46,7 +46,7 @@
 		max-bitrate = <5000000>;
 		#phy-cells = <0>;
 	};
-	*/
+
 
 	chosen {
 		zephyr,console = &uart4;
@@ -308,7 +308,6 @@ zephyr_udc0: &usb {
 */
 //};
 
-/*
 &fdcan1 {
 	pinctrl-0 = <&fdcan1_rx_pb8 &fdcan1_tx_pb9>;
 	pinctrl-names = "default";
@@ -328,7 +327,7 @@ zephyr_udc0: &usb {
 	phys = <&transceiver2>;
 	status = "okay";
 };
-*/
+
 
 // &eadc {
 // 	#address-cells = <1>;
