@@ -252,11 +252,52 @@
 	apb3-prescaler = <2>;
 };
 
+&rtc {
+	clocks = <&rcc STM32_CLOCK_BUS_APB3 0x00200000>,
+		 <&rcc STM32_SRC_LSE RTC_SEL(1)>;
+	status = "okay";
+};
+
+&iwdg {
+	status = "okay";
+};
+
+&gpdma1 {
+	status = "okay";
+};
+
+&gpdma2 {
+	status = "okay";
+};
+
 zephyr_udc0: &usb {
 	pinctrl-0 = <&usb_dm_pa11 &usb_dp_pa12>;
 	pinctrl-names = "default";
 	status = "okay";
 };
+
+
+&adc1 {
+	clocks = <&rcc STM32_CLOCK_BUS_AHB2 0x00000400>,
+		 <&rcc STM32_SRC_HCLK ADCDAC_SEL(0)>;
+	pinctrl-0 = <
+		&adc1_inp0_pa0
+		&adc1_inp1_pa1
+		&adc1_inp11_pc1
+		&adc1_inp12_pc2
+		&adc1_inp13_pc3
+		&adc1_inp14_pa2
+		&adc1_inp15_pa3
+		&adc1_inp18_pa4
+		&adc1_inp19_pa5
+	>;
+	pinctrl-names = "default";
+	st,adc-clock-source = "ASYNC";
+	st,adc-prescaler = <6>;
+	status = "okay";
+};
+
+
 
 //&usb {
 //	status = "okay";
