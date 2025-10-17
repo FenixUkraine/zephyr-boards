@@ -58,7 +58,7 @@
 		zephyr,code-partition = &slot0_partition;
 		// zephyr,code-partition = &code_partition;
 		// zephyr,boot-partition = &boot_partition;
-		// zephyr,canbus = &fdcan1;
+		zephyr,canbus = &fdcan2;
 		// zephyr,lte = &lte;
 	};
 
@@ -730,7 +730,7 @@ zephyr_udc0: &usb {
 		compatible = "simcom,a76xx";
 		// power-gpios = <&gpiod 4 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
 		mdm-power-gpios = <&gpioa 15 (GPIO_ACTIVE_HIGH)>;	// POWERKEY. Not is POWER
-		mdm-wake-gpios = <&gpiod 1 (GPIO_ACTIVE_HIGH)>;
+		// mdm-wake-gpios = <&gpiod 1 (GPIO_ACTIVE_HIGH)>;
 		status = "okay";
 	};
 };
@@ -846,6 +846,11 @@ zephyr_udc0: &usb {
 // 	pinctrl-names = "default";
 // 	status = "okay";
 // };
+
+
+&rng {
+	status = "okay";
+};
 
 
 // For low-power tick source
