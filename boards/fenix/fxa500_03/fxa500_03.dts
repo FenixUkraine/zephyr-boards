@@ -736,17 +736,17 @@ zephyr_udc0: &usb {
 };
 
 
-&spi2 {
-	pinctrl-0 = <&spi2_sck_pb13 &spi2_miso_pb14 &spi2_mosi_pb15>;
+&spi4 {
+	pinctrl-0 = <&spi4_sck_pe12 &spi4_miso_pe13 &spi4_mosi_pe14>;
 	pinctrl-names = "default";
-	cs-gpios = <&gpiob 12 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
-	status = "disabled";
+	cs-gpios = <&gpioe 15 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+	status = "okay";
 
 	lis2dw12: lis2dw12@0 {
 		compatible = "st,lis2dw12";
 		spi-max-frequency = <1000000>;
 		reg = <0>;
-		irq-gpios = <&gpiod 8 GPIO_ACTIVE_HIGH>;
+		irq-gpios = <&gpiob 10 GPIO_ACTIVE_HIGH>;
 	};
 
 };
