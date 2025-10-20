@@ -23,7 +23,7 @@
 		// sw1 = &user_button_2;
 		modem-uart = &usart3;		// WTF? Це дійсно треба?
 		modem = &modem;
-		lte-power = &lte_power;
+		accel0 = &lis2dw12;
 		// adc0 = &eadc;
 
 		// analog-inputs = &analog_inputs0;
@@ -32,6 +32,9 @@
 		// accelerometer = &mma8652fc;
 
 		// shock-sensor = &shock_sensor;
+
+		// Out of standard drivers and declarations
+		lte-power = &lte_power;
 	};
 
 
@@ -747,6 +750,7 @@ zephyr_udc0: &usb {
 		spi-max-frequency = <1000000>;
 		reg = <0>;
 		irq-gpios = <&gpiob 10 GPIO_ACTIVE_HIGH>;
+		int-pin = <1>;
 	};
 
 };
