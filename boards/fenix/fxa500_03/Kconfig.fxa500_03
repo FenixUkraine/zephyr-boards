@@ -6,3 +6,4 @@ config BOARD_FXA500_03
 	#bool "Fenix Auto FXA500-03 Board"
 	#depends on SOC_M2354
 	select SOC_STM32H563XX
+

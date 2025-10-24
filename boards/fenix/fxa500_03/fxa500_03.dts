@@ -63,6 +63,9 @@
 		// zephyr,boot-partition = &boot_partition;
 		zephyr,canbus = &fdcan2;
 		// zephyr,lte = &lte;
+
+		// Use one of WiFi or BLE depend of ESP firmware
+		zephyr,bt-hci = &bt_hci_uart;
 	};
 
 	leds {
@@ -713,11 +716,24 @@ zephyr_udc0: &usb {
 	current-speed = <115200>;
 	hw-flow-control;
 	status = "okay";
+	/*
 	esp_wifi: esp-wifi {
 		compatible = "espressif,esp-at";
 		// power-gpios = <&gpiod 4 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
 		power-gpios = <&gpiod 4 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
 		status = "okay";
+	};
+	*/
+	bt_hci_uart: bt_hci_uart {
+		compatible = "zephyr,bt-hci-uart";
+		status = "okay";
+		reset-gpios = <&gpioc 12 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+
+		// da1453x {
+		// 	compatible = "renesas,bt-hci-da1453x";
+		// 	reset-gpios = <&mikrobus_header 1 GPIO_ACTIVE_HIGH>;
+		// 	status = "okay";
+		// };
 	};
 };
 
@@ -733,7 +749,7 @@ zephyr_udc0: &usb {
 		compatible = "simcom,a76xx";
 		// power-gpios = <&gpiod 4 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
 		mdm-power-gpios = <&gpioa 15 (GPIO_ACTIVE_HIGH)>;	// POWERKEY. Not is POWER
-		// mdm-wake-gpios = <&gpiod 1 (GPIO_ACTIVE_HIGH)>;
+		mdm-wake-gpios = <&gpiod 1 (GPIO_ACTIVE_HIGH)>;
 		status = "okay";
 	};
 };
@@ -747,6 +763,7 @@ zephyr_udc0: &usb {
 
 	lis2dw12: lis2dw12@0 {
 		compatible = "st,lis2dw12";
+		status = "okay";
 		spi-max-frequency = <1000000>;
 		reg = <0>;
 		irq-gpios = <&gpiob 10 GPIO_ACTIVE_HIGH>;

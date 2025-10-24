@@ -6,4 +6,28 @@ if BOARD_FXA500_03
 
 config BOARD
 	default "fxa500_03"
+
+
+# Здається з esp-hosted нічого не вийде, бо для нього треба SPI або SDIO
+if NETWORKING
+
+config WIFI_ESP_HOSTED
+	default y
+
+endif # NETWORKING
+
+
+if MODEM_CELLULAR
+
+config MODEM_CELLULAR_PREINIT_PRIORITY
+	int "Cellular modem driver initialization priority"
+	default 69
+	range 0 99
+	help
+	  Driver pre-initialization priority for cellular modem drivers.
+	  Defaults to less than POST_KERNEL/MODEM_CELLULAR_INIT_PRIORITY.
+	  But greater than GPIO/Driver.
+
+endif # MODEM_CELLULAR
+
 endif
