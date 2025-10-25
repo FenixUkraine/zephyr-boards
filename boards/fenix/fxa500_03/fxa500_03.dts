@@ -23,6 +23,7 @@
 		// sw1 = &user_button_2;
 		modem-uart = &usart3;		// WTF? Це дійсно треба?
 		modem = &modem;
+		atmodem = &atmodem;
 		accel0 = &lis2dw12;
 		// adc0 = &eadc;
 
@@ -749,8 +750,19 @@ zephyr_udc0: &usb {
 	modem: modem {
 		compatible = "simcom,a76xx";
 		// power-gpios = <&gpiod 4 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-		mdm-power-gpios = <&gpioa 15 (GPIO_ACTIVE_HIGH)>;	// POWERKEY. Not is POWER
-		mdm-wake-gpios = <&gpiod 1 (GPIO_ACTIVE_HIGH)>;
+		// mdm-vbat-gpios = <&gpiod 10 (GPIO_ACTIVE_HIGH)>;	// Main power
+		mdm-power-gpios = <&gpioa 15 (GPIO_ACTIVE_HIGH)>;	// PWRKEY. Not is POWER
+		mdm-wake-gpios = <&gpiod 1 (GPIO_ACTIVE_HIGH)>;		// ~DTR
+		// mdm-status-gpios = <&gpioc 8 (GPIO_ACTIVE_HIGH)>;	// STATUS
+		status = "okay";
+	};
+	atmodem: atmodem {
+		compatible = "simcom,a76xx-at";
+		// power-gpios = <&gpiod 4 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+		mdm-vbat-gpios = <&gpiod 10 (GPIO_ACTIVE_HIGH)>;	// Main power
+		mdm-power-gpios = <&gpioa 15 (GPIO_ACTIVE_HIGH)>;	// PWRKEY. Not is POWER
+		mdm-wake-gpios = <&gpiod 1 (GPIO_ACTIVE_HIGH)>;		// ~DTR
+		mdm-status-gpios = <&gpioc 8 (GPIO_ACTIVE_HIGH)>;	// STATUS
 		status = "okay";
 	};
 };

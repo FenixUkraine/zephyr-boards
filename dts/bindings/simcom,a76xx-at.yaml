@@ -1,0 +1,16 @@
+# Copyright (C) 2025 Olivier Lalonde
+# SPDX-License-Identifier: Apache-2.0
+
+description: Simcom A76XX modem for AT driver
+
+compatible: "simcom,a76xx-at"
+
+include: zephyr,cellular-modem-device.yaml
+
+properties:
+  mdm-vbat-gpios:
+    type: phandle-array
+    required: true
+  mdm-status-gpios:
+    type: phandle-array
+    required: true
