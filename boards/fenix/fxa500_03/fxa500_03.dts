@@ -607,9 +607,14 @@ zephyr_udc0: &usb {
 			reg = <0x00100000 DT_SIZE_K(960)>;
 		};
 
-		storage_partition: partition@1f0000 {
+		storage_partition_tpf: partition@1f0000 {
+			label = "storage_tpf";
+			reg = <0x001f0000 DT_SIZE_K(16)>;
+		};
+
+		storage_partition: partition@1f4000 {
 			label = "storage";
-			reg = <0x001f0000 DT_SIZE_K(64)>;
+			reg = <0x001f4000 DT_SIZE_K(48)>;
 		};
 
 		// bootloader: partition@0 {
