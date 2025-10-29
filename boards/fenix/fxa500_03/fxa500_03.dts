@@ -33,6 +33,7 @@
 		// accelerometer = &mma8652fc;
 
 		// shock-sensor = &shock_sensor;
+		shock-sensor = &shock_sensor;
 
 		// Out of standard drivers and declarations
 		// TODO: Це треба перенести у відповідний драйвер.
@@ -111,6 +112,14 @@
 	// 	sampling-period-ms = <2>;
 	// 	// sampling-period-ms = <10>;
 	// };
+
+	shock_sensor: shock_sensor {
+		compatible = "zephyr,shock-sensor";
+		status = "okay";
+		io-channels = <&adc2 10>;
+		sampling-period-ms = <2>;
+		// sampling-period-ms = <10>;
+	};
 
 	// analog_inputs0: analog-input {
 	// 	compatible = "analog-input";
@@ -301,6 +310,16 @@ zephyr_udc0: &usb {
 	status = "okay";
 };
 
+&adc2 {
+	clocks = <&rcc STM32_CLOCK(AHB2, 10)>,
+		 <&rcc STM32_SRC_HCLK ADCDAC_SEL(0)>;
+	pinctrl-0 = <&adc2_inp10_pc0>;
+	pinctrl-names = "default";
+	clock-names = "adcx", "adc_ker";
+	st,adc-clock-source = "ASYNC";
+	st,adc-prescaler = <6>;
+	status = "okay";
+};
 
 
 //&usb {
