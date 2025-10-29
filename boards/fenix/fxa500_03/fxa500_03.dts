@@ -174,36 +174,22 @@
 	// 		r_top = <1100>;
 	// 		r_bottom = <200>;
 	// 	};
-
 	// };
 
 	zephyr,user {
 		// compatible = "gpio-output";
 
-		// ADC inputs
-		// in-1-
-
-		// Digital Inputs
-		// in-2-gpios = <&gpiob 13 GPIO_ACTIVE_HIGH>;	// 2. Капот
-
 		// Outputs
-		// out-1-gpios = <&gpiob 4 GPIO_ACTIVE_HIGH>;	// 1. Сирена
-		// out-2-gpios = <&gpiob 5 GPIO_ACTIVE_HIGH>;	// 2. Аварійка
-		// out-3-gpios = <&gpioc 0 GPIO_ACTIVE_HIGH>;	// 3. Закривання ЦЗ
-		// out-4-gpios = <&gpiod 3 GPIO_ACTIVE_HIGH>;	// 4. Відкривання ЦЗ
-		// out-5-gpios = <&gpiod 1 GPIO_ACTIVE_HIGH>;	// 5. Відкривання багажника
-		// out-6-gpios = <&gpioa 15 GPIO_ACTIVE_HIGH>;	// 6. Старт/Стоп
-		// out-7-gpios = <&gpiod 2 GPIO_ACTIVE_HIGH>;	// 7. НЗБД
-		// out-8-gpios = <&gpioa 14 GPIO_ACTIVE_HIGH>;	// 8. Канал 1
-
-		// io-channels = <&eadc 12>, <&eadc 14>;
-		// io-channels = <&eadc 14>;
-
-		// Analog Inputs sorted by channed index
-		// adc-channels = <&eadc 14>, <&eadc 13>, <&eadc 12>, <&eadc 11>, <&eadc 10>, <&eadc 9>, <&eadc 8>, <&eadc 7>, <&eadc 6>, <&eadc 15>;
-		// io-channels = <&eadc 6>, <&eadc 7>, <&eadc 8>, <&eadc 9>, <&eadc 10>, <&eadc 11>, <&eadc 12>, <&eadc 13>, <&eadc 14>, <&eadc 15>;
-		// io-channels = <&eadc 15>;
+		out-1-gpios = <&gpioc 5 GPIO_ACTIVE_HIGH>;	// 1. Сирена
+		out-2-gpios = <&gpioc 4 GPIO_ACTIVE_HIGH>;	// 2. Аварійка
+		out-3-gpios = <&gpioe 5 GPIO_ACTIVE_HIGH>;	// 3. Закривання ЦЗ
+		out-4-gpios = <&gpioc 13 GPIO_ACTIVE_HIGH>;	// 4. Відкривання ЦЗ
+		out-5-gpios = <&gpioe 6 GPIO_ACTIVE_HIGH>;	// 5. Відкривання багажника
+		out-6-gpios = <&gpioe 4 GPIO_ACTIVE_HIGH>;	// 6. Старт/Стоп
+		out-7-gpios = <&gpioe 3 GPIO_ACTIVE_HIGH>;	// 7. НЗБД
+		out-8-gpios = <&gpioe 2 GPIO_ACTIVE_HIGH>;	// 8. Канал 1
 	};
+
 
 	// fstab {
 	// 	compatible = "zephyr,fstab";
@@ -607,15 +593,20 @@ zephyr_udc0: &usb {
 			reg = <0x00100000 DT_SIZE_K(960)>;
 		};
 
-		storage_partition_tpf: partition@1f0000 {
-			label = "storage_tpf";
-			reg = <0x001f0000 DT_SIZE_K(16)>;
+		storage_partition: partition@1f0000 {
+			label = "storage";
+			reg = <0x001f4000 DT_SIZE_K(64)>;
 		};
 
-		storage_partition: partition@1f4000 {
-			label = "storage";
-			reg = <0x001f4000 DT_SIZE_K(48)>;
-		};
+		// storage_partition_tpf: partition@1f0000 {
+		// 	label = "storage_tpf";
+		// 	reg = <0x001f0000 DT_SIZE_K(16)>;
+		// };
+
+		// storage_partition: partition@1f4000 {
+		// 	label = "storage";
+		// 	reg = <0x001f4000 DT_SIZE_K(48)>;
+		// };
 
 		// bootloader: partition@0 {
 		// 	label = "mcuboot";
