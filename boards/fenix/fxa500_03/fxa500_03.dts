@@ -27,8 +27,8 @@
 		accel0 = &lis2dw12;
 		// adc0 = &eadc;
 
-		// analog-inputs = &analog_inputs0;
-		// v12v = &v12v;
+		analog-inputs = &analog_inputs0;
+		v12v = &v12v;
 		// shake-sensor = &shake_sensor;
 		// accelerometer = &mma8652fc;
 
@@ -86,6 +86,15 @@
 		};
 	};
 
+	v12v: v12v {
+		compatible = "voltage-divider";
+		status = "okay";
+		io-channels = <&adc1 15>;
+		// Cheat! Multiply by 1000 for millivolts is voltage divider sensor output
+		full-ohms = <(20000 + 2000)>;
+		output-ohms = <2>;
+	};
+
 	// v12v: v12v {
 	// 	compatible = "voltage-divider";
 	// 	status = "okay";
@@ -119,6 +128,68 @@
 		io-channels = <&adc2 10>;
 		sampling-period-ms = <2>;
 		// sampling-period-ms = <10>;
+	};
+
+	analog_inputs0: analog-input {
+		compatible = "analog-input";
+		// poll-period-ms = <32>;
+		poll-period-ms = <100>;
+
+		in1 {
+			id = <0>;
+			io-channels = <&adc1 11>;
+			r_top = <1100>;
+			r_bottom = <200>;
+		};
+
+		in2 {
+			id = <1>;
+			io-channels = <&adc1 12>;
+			r_top = <1100>;
+			r_bottom = <200>;
+		};
+
+		in3 {
+			id = <2>;
+			io-channels = <&adc1 13>;
+			r_top = <1100>;
+			r_bottom = <200>;
+		};
+
+		in4 {
+			id = <3>;
+			io-channels = <&adc1 0>;
+			r_top = <1100>;
+			r_bottom = <200>;
+		};
+
+		in5 {
+			id = <4>;
+			io-channels = <&adc1 1>;
+			r_top = <1100>;
+			r_bottom = <200>;
+		};
+
+		in6 {
+			id = <5>;
+			io-channels = <&adc1 14>;
+			r_top = <1100>;
+			r_bottom = <200>;
+		};
+
+		in7 {
+			id = <6>;
+			io-channels = <&adc1 19>;
+			r_top = <1100>;
+			r_bottom = <200>;
+		};
+
+		in8 {
+			id = <7>;
+			io-channels = <&adc1 18>;
+			r_top = <1100>;
+			r_bottom = <200>;
+		};
 	};
 
 	// analog_inputs0: analog-input {
