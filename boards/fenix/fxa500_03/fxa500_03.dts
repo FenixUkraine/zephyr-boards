@@ -33,91 +33,28 @@
 			reg = <0x00100000 DT_SIZE_K(960)>;
 		};
 
-		storage_partition: partition@1f0000 {
-			label = "storage";
-			reg = <0x001f4000 DT_SIZE_K(64)>;
-		};
-
-		// storage_partition_tpf: partition@1f0000 {
-		// 	label = "storage_tpf";
-		// 	reg = <0x001f0000 DT_SIZE_K(16)>;
-		// };
-
-		// storage_partition: partition@1f4000 {
+		// storage_partition: partition@1f0000 {
 		// 	label = "storage";
-		// 	reg = <0x001f4000 DT_SIZE_K(48)>;
+		// 	reg = <0x001f4000 DT_SIZE_K(64)>;
 		// };
-
-		// bootloader: partition@0 {
-		// 	label = "mcuboot";
-		// 	reg = <0x00000000 0x00020000>;
-		// 	read-only;
-		// };
-
-		// boot_partition: partition@100000 {
-		// 	label = "mcuboot";
-		// 	reg = <0x00100000 DT_SIZE_K(16)>;
-		// };
-
-		// code_partition: partition@0 {
-		// 	label = "image-0";
-		// 	reg = <0x00000000 DT_SIZE_K(512)>;
-		// };
-
-		/*
-		// Значення налаштувань. Змінюються тільки при налаштуванні системи
-		// Дві сторінки для запобігання втрати даних
-		storage_partition_tpf: partition@80000 {
-			label = "storage_tpf";
-			reg = <0x80000 DT_SIZE_K(16)>;
-		};
-
-		// Збереження стану системи. Змінюється при будь-якій зміні стану системи.
-		// Проводиться відкадений запис за для підвищення строку служби пам'яті.
-		// Запис ведеться послідовно у три сторінки.
-		// Використовуються Zephyr Memory Storage (ZMS)
-		// https://docs.zephyrproject.org/latest/services/storage/zms/zms.html
-		storage_partition_nvs: partition@84000 {
-			label = "storage_nvs";
-			reg = <0x84000 DT_SIZE_K(16)>;
-		};
-
-		// Список користувачів, та всяка інша інформація, яка рідко змінюється.
-		storage_partition_nvs2: partition@88000 {
-			label = "storage_partition_nvs2";
-			reg = <0x88000 DT_SIZE_K(64)>;
-		};
-
-		// Збереження ключів.
-		storage_partition_pc_public_key: partition@98000 {
-			label = "storage_pc_public_key";
-			reg = <0x98000 DT_SIZE_K(16)>;
-		};
-
-		// Нерозподілена область.
-		storage_partition_unused: partition@9C000 {
-			label = "storage_partition_unused";
-			reg = <0x9C000 DT_SIZE_K(352)>;
-		};
-
-		// Останні 48 кілобайти для загрузчика (треба впевнитись шо не перекривається з іншими розділами!)
-		boot_partition: partition@F4000 {
-			label = "bootloader";
-			reg = <(DT_SIZE_K(1024) - DT_SIZE_K(48)) DT_SIZE_K(48)>;
-		};
-		*/
 	};
 };
 
-&ext_flash {
+&w25q128jv {
+// &ext_flash {
 	partitions {
 		compatible = "fixed-partitions";
 		#address-cells = <1>;
 		#size-cells = <1>;
 
-		partition@0 {
-			label = "nor";
+        storage_partition: partition@0 {
+			label = "storage";
 			reg = <0x00000000 DT_SIZE_M(16)>;
 		};
+
+		// partition@0 {
+		// 	label = "nor";
+		// 	reg = <0x00000000 DT_SIZE_M(16)>;
+		// };
 	};
 };
