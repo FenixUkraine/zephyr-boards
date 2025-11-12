@@ -3,6 +3,8 @@ board:
   vendor: fenix
   socs:
     - name: stm32h563xx
+      variants:
+        - name: ext_flash_app
     #- name: esp32c6-mini
   # revision:
   #   format: <major.minor.patch|letter|number|custom>

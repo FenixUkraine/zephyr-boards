@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 board_runner_args(pyocd "--target=stm32h563vgtx" "--frequency=4000000")
+board_runner_args(probe_rs "--chip=STM32H563VG")
 board_runner_args(jlink "--device=STM32H563VG" "--speed=4000" "--reset-after-load")
 board_runner_args(dfu-util "--pid=0483:df11" "--alt=0" "--dfuse")
 board_runner_args(stm32cubeprogrammer "--port=swd" "--reset-mode=hw")
@@ -14,6 +15,7 @@ include(${ZEPHYR_BASE}/boards/common/pyocd.board.cmake)
 include(${ZEPHYR_BASE}/boards/common/nulink.board.cmake)
 include(${ZEPHYR_BASE}/boards/common/openocd.board.cmake)
 include(${ZEPHYR_BASE}/boards/common/jlink.board.cmake)
+include(${ZEPHYR_BASE}/boards/common/probe-rs.board.cmake)
 include(${ZEPHYR_BASE}/boards/common/dfu-util.board.cmake)
 include(${ZEPHYR_BASE}/boards/common/stm32cubeprogrammer.board.cmake)
 # include(${ZEPHYR_BASE}/boards/common/canopen.board.cmake)

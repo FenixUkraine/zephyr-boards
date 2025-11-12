@@ -1,0 +1,26 @@
+identifier: fxa500_03/ext_flash_app
+name: Fenix Auto FXA500-03 board with App in Ext Flash
+type: mcu
+arch: arm
+toolchain:
+  - zephyr
+sysbuild: true
+ram: 640
+flash: 16383 # size in kB of 1 app slot minus MCUboot header size (1KB)
+supported:
+  - gpio
+  - uart
+  - watchdog
+  - entropy
+  - dma
+  - adc
+  - dac
+  - pwm
+  - counter
+  - spi
+  - octospi
+  - can
+  - i2c
+  - rtc
+  - usbd
+vendor: st

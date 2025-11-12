@@ -17,6 +17,24 @@ manifest:
 
 І після `west update` можна збирати більшість прикладів обираючи плату `-b fxa500_03`.
 
+Альтернативно, можна використовувати варіанти, вказавши `-b fxa500_03/stm32h563xx/ext_flash_app`.
+
+
+## TODO
+
+Якшо я не помиляюсь, то є можливість відображення зовнішньої Flash-памʼяті
+у адресне серидовище через MPU. В тому числі повинна бути можливість XIP.
+І повинно працювати все, включно з mcuboot. Прошивати, напевно, треба буде через
+`stm32cubeprogrammer "--extload=...`. Не впевнен
+
+Посилання, де можна зібрати інформацію:
+
+- https://github.com/STMicroelectronics/stm32-external-loader/blob/main/STM32H5x_boards/MX25LM51245G_STM32H573I-DK/Readme.md
+
+- https://users.rust-lang.org/t/concept-question-how-to-flash-external-spi-memory-for-xip/108845/13
+
+- https://open-cmsis-pack.github.io/Open-CMSIS-Pack-Spec/main/html/flashAlgorithm.html
+
 ## Внесок у проєкт
 
 Ми вітаємо ваш внесок! Будь ласка, дотримуйтеся наступних кроків:
