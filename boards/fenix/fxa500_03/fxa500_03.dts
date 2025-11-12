@@ -967,7 +967,42 @@ zephyr_udc0: &usb {
 		     &octospi1_io2_pa7 &octospi1_io3_pa6
 		     &octospi1_clk_pb2 &octospi1_ncs_pe11>;
 	pinctrl-names = "default";
-	status = "disabled";
+	status = "okay";
+
+	// ext_flash_ctrl: xspi-nor-flash@0 {
+	// 	compatible = "st,stm32-xspi-nor";
+	// 	reg = <0>;
+	// 	size = <DT_SIZE_M(16)>;
+	// 	ospi-max-frequency = <DT_FREQ_M(50)>;
+	// 	spi-bus-width = <XSPI_QUAD_MODE>;
+	// 	data-rate = <XSPI_STR_TRANSFER>;
+	// 	four-byte-opcodes;
+	// 	status = "okay";
+
+	// 	#address-cells = <1>;
+	// 	#size-cells = <1>;
+	// 	ranges = <0x0 0x70000000 DT_SIZE_M(128)>;
+
+
+	// 	ext_flash: w25q128jv: ext-flash@0 {
+	// 		compatible = "soc-nv-flash";
+	// 		status = "okay";
+	// 		reg = <0x0 DT_SIZE_M(16)>;
+	// 		write-block-size = <1>;
+	// 		erase-block-size = <DT_SIZE_K(4)>;
+
+	// 		partitions {
+	// 			compatible = "fixed-partitions";
+	// 			#address-cells = <1>;
+	// 			#size-cells = <1>;
+
+	// 			storage_partition_ex: partition@0 {
+	// 				label = "storage";
+	// 				reg = <0x00000000 DT_SIZE_M(16)>;
+	// 			};
+	// 		};
+	// 	};
+	// };
 
 	w25q128jv: w25q128jv@0 {
 		status="okay";
@@ -986,7 +1021,10 @@ zephyr_udc0: &usb {
 		// sck-frequency = <DT_FREQ_M(133)>;
 		// W25Q128JV-IN/IQ/JQ = 0xEF 40 18
 		// W25Q128JV-IM*/JM* = 0xEF 70 18
-		jedec-id = [ef 40 18];
+		// jedec-id = [ef 40 18];
+		// jedec-id = [ef 70 18];
+
+		four-byte-opcodes;
 
 		// has-dpd;
 		// t-enter-dpd = <3000>;
@@ -995,7 +1033,18 @@ zephyr_udc0: &usb {
 		// erase-block-size = <4096>;
 		// write-block-size = <1>;
 
-		//partitions {
+		partitions {
+			compatible = "fixed-partitions";
+			#address-cells = <1>;
+			#size-cells = <1>;
+
+			storage_partition_ex: partition@0 {
+				label = "storage_ex";
+				reg = <0x00000000 DT_SIZE_M(16)>;
+			};
+		};
+
+		// partitions {
 		//	compatible = "fixed-partitions";
 		//	#address-cells = <1>;
 		//	#size-cells = <1>;
@@ -1019,7 +1068,7 @@ zephyr_udc0: &usb {
 		//		label = "gps";
 		//		reg = <DT_SIZE_M(8) DT_SIZE_M(7)>;
 		//	};
-		//};
+		// };
 	};
 
 };
