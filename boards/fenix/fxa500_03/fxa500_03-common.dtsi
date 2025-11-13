@@ -886,46 +886,6 @@ zephyr_udc0: &usb {
 		     &octospi1_clk_pb2 &octospi1_ncs_pe11>;
 	pinctrl-names = "default";
 	status = "okay";
-
-	w25q128jv: xspi-nor-flash@0 {
-		status="okay";
-		compatible = "st,stm32-xspi-nor";
-		reg = <0>;
-		size = <DT_SIZE_M(128)>;	// Mbits!
-		spi-bus-width = <XSPI_QUAD_MODE>;
-		// Схоже шо XSPI_DTR_TRANSFER можливий лише у XSPI_OCTO_MODE
-		// data-rate = <XSPI_DTR_TRANSFER>;
-		data-rate = <XSPI_STR_TRANSFER>;
-		// ospi-max-frequency = <DT_FREQ_M(133)>;
-		ospi-max-frequency = <DT_FREQ_M(25)>;
-		// W25Q128JV-IN/IQ/JQ = 0xEF 40 18
-		// W25Q128JV-IM*/JM* = 0xEF 70 18
-		jedec-id = [ef 40 18];
-		// jedec-id = [ef 70 18];
-
-		writeoc = "PP_1_1_4";
-		// dummy-cycles = <8>;
-		requires-ulbpr;
-
-		// four-byte-opcodes;
-
-		/* Активація Memory-Mapped режиму через стандартний механізм DT */
-		#address-cells = <1>;
-		#size-cells = <1>;
-		// ranges = <0x0 0x90000000 DT_SIZE_MB(16)>;
-		ranges = <0x0 0x90000000 DT_SIZE_M(16)>; /* Ext Flash mem-mapped to 0x90000000 */
-
-		partitions {
-			compatible = "fixed-partitions";
-			#address-cells = <1>;
-			#size-cells = <1>;
-
-			extflash_partition: partition@0 {
-				label = "ext_storage";
-				reg = <0x00000000 DT_SIZE_M(16)>;
-			};
-		};
-	};
 };
 
 // &uart5 {
