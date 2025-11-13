@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-/dts-v1/;
+
 #include <st/h5/stm32h563Xi.dtsi>
 #include <st/h5/stm32h563vgtx-pinctrl.dtsi>
 #include <zephyr/dt-bindings/input/input-event-codes.h>
@@ -887,45 +887,6 @@ zephyr_udc0: &usb {
 	pinctrl-names = "default";
 	status = "okay";
 
-	// ext_flash_ctrl: xspi-nor-flash@0 {
-	// 	status = "okay";
-	// 	compatible = "st,stm32-xspi-nor";
-	// 	reg = <0>;
-	// 	size = <DT_SIZE_M(128)>;  /* 128 Mbits */
-	// 	ospi-max-frequency = <DT_FREQ_M(133)>;
-	// 	spi-bus-width = <XSPI_QUAD_MODE>;
-	// 	// Схоже шо XSPI_DTR_TRANSFER можливий лише у XSPI_OCTO_MODE
-	// 	data-rate = <XSPI_STR_TRANSFER>;
-	// 	// four-byte-opcodes;
-	// 	jedec-id = [ef 40 18];
-	// 	writeoc = "PP_1_1_4";
-	// 	requires-ulbpr;
-
-	// 	#address-cells = <1>;
-	// 	#size-cells = <1>;
-	// 	ranges = <0x0 0x90000000 DT_SIZE_M(16)>; /* Ext Flash mem-mapped to 0x90000000 */
-
-	// 	ext_flash: w25q128jv: ext-flash@0 {
-	// 		compatible = "soc-nv-flash";
-	// 		status = "okay";
-	// 		reg = <0x0 DT_SIZE_M(16)>;
-	// 		write-block-size = <1>;
-	// 		erase-block-size = <DT_SIZE_K(4)>;
-
-	// 		partitions {
-	// 			compatible = "fixed-partitions";
-	// 			#address-cells = <1>;
-	// 			#size-cells = <1>;
-
-	// 			storage_partition: partition@0 {
-	// 				// label = "storage";
-	// 				label = "nor";
-	// 				reg = <0x00000000 DT_SIZE_M(16)>;
-	// 			};
-	// 		};
-	// 	};
-	// };
-
 	w25q128jv: xspi-nor-flash@0 {
 		status="okay";
 		compatible = "st,stm32-xspi-nor";
@@ -935,16 +896,24 @@ zephyr_udc0: &usb {
 		// Схоже шо XSPI_DTR_TRANSFER можливий лише у XSPI_OCTO_MODE
 		// data-rate = <XSPI_DTR_TRANSFER>;
 		data-rate = <XSPI_STR_TRANSFER>;
-		ospi-max-frequency = <DT_FREQ_M(133)>;
+		// ospi-max-frequency = <DT_FREQ_M(133)>;
+		ospi-max-frequency = <DT_FREQ_M(25)>;
 		// W25Q128JV-IN/IQ/JQ = 0xEF 40 18
 		// W25Q128JV-IM*/JM* = 0xEF 70 18
 		jedec-id = [ef 40 18];
 		// jedec-id = [ef 70 18];
 
 		writeoc = "PP_1_1_4";
+		// dummy-cycles = <8>;
 		requires-ulbpr;
 
 		// four-byte-opcodes;
+
+		/* Активація Memory-Mapped режиму через стандартний механізм DT */
+		#address-cells = <1>;
+		#size-cells = <1>;
+		// ranges = <0x0 0x90000000 DT_SIZE_MB(16)>;
+		ranges = <0x0 0x90000000 DT_SIZE_M(16)>; /* Ext Flash mem-mapped to 0x90000000 */
 
 		partitions {
 			compatible = "fixed-partitions";
@@ -956,34 +925,7 @@ zephyr_udc0: &usb {
 				reg = <0x00000000 DT_SIZE_M(16)>;
 			};
 		};
-
-		// partitions {
-		//	compatible = "fixed-partitions";
-		//	#address-cells = <1>;
-		//	#size-cells = <1>;
-
-		//	/* This is the littlefs v1 file system pre-installed
-		// 	* by Particle.
-		// 	*/
-		//	littlefs_partition: partition@0 {
-		//		label = "littlefs";
-		//		reg = <0x00000000 DT_SIZE_M(8)>;	// Eah! Half of entire memory.
-		//	};
-
-		//	/* 1MB partition to use for raw data storage. */
-		//	ext_storage_partition: partition@800000 {
-		//		label = "storage";
-		//		reg = <DT_SIZE_M(8) DT_SIZE_M(1)>;
-		//	};
-
-		//	/* 7MB partition for GPS-buffer data. */
-		//	gps_partition: partition@900000 {
-		//		label = "gps";
-		//		reg = <DT_SIZE_M(8) DT_SIZE_M(7)>;
-		//	};
-		// };
 	};
-
 };
 
 // &uart5 {

@@ -1,0 +1,44 @@
+/* Declare external Flash as memory-mapped */
+&xspi1 {
+
+    ext_flash_ctrl: xspi-nor-flash@0 {
+		status = "okay";
+		compatible = "st,stm32-xspi-nor";
+		reg = <0>;
+		size = <DT_SIZE_M(128)>;  /* 128 Mbits */
+		ospi-max-frequency = <DT_FREQ_M(133)>;
+		spi-bus-width = <XSPI_QUAD_MODE>;
+		// Схоже шо XSPI_DTR_TRANSFER можливий лише у XSPI_OCTO_MODE
+		data-rate = <XSPI_STR_TRANSFER>;
+		// four-byte-opcodes;
+		jedec-id = [ef 40 18];
+		writeoc = "PP_1_1_4";
+		requires-ulbpr;
+
+		#address-cells = <1>;
+		#size-cells = <1>;
+		ranges = <0x0 0x90000000 DT_SIZE_M(16)>; /* Ext Flash mem-mapped to 0x90000000 */
+
+		ext_flash: w25q128jv: ext-flash@0 {
+			compatible = "soc-nv-flash";
+			status = "okay";
+			reg = <0x0 DT_SIZE_M(16)>;
+			write-block-size = <1>;
+			erase-block-size = <DT_SIZE_K(4)>;
+
+			partitions {
+				compatible = "fixed-partitions";
+				#address-cells = <1>;
+				#size-cells = <1>;
+
+				extflash_partition: partition@0 {
+					// label = "storage";
+					// label = "nor";
+					label = "ext_storage";
+					reg = <0x00000000 DT_SIZE_M(16)>;
+				};
+			};
+		};
+	};
+};
+
