@@ -49,14 +49,13 @@
 		volt-sensor1 = &vbat;
 	};
 
-	// ext_flash_mem: memory@90000000 {
-	// 	compatible = "zephyr,memory-region";
-	// 	reg = <0x90000000 DT_SIZE_M(16)>;
-	// 	zephyr,memory-region = "EXT_FLASH";
-	// 	/* DT_MEM_ARM_MPU_EXTMEM and DT_MEM_ARM_MPU_FLASH cause MPU issues */
-	// 	zephyr,memory-attr = <DT_MEM_ARM_MPU_IO>;
-	// };
-
+	ext_flash_mem: memory@90000000 {
+		compatible = "zephyr,memory-region";
+		reg = <0x90000000 DT_SIZE_M(16)>;
+		zephyr,memory-region = "EXT_FLASH";
+		/* DT_MEM_ARM_MPU_EXTMEM and DT_MEM_ARM_MPU_FLASH cause MPU issues */
+		zephyr,memory-attr = <DT_MEM_ARM_MPU_IO>;
+	};
 
 	transceiver1: can-phy1 {
 		compatible = "microchip,mcp2562fd", "can-transceiver-gpio";
@@ -889,14 +888,18 @@ zephyr_udc0: &usb {
 	status = "okay";
 
 	// ext_flash_ctrl: xspi-nor-flash@0 {
+	// 	status = "okay";
 	// 	compatible = "st,stm32-xspi-nor";
 	// 	reg = <0>;
 	// 	size = <DT_SIZE_M(128)>;  /* 128 Mbits */
-	// 	ospi-max-frequency = <DT_FREQ_M(50)>;
+	// 	ospi-max-frequency = <DT_FREQ_M(133)>;
 	// 	spi-bus-width = <XSPI_QUAD_MODE>;
+	// 	// Схоже шо XSPI_DTR_TRANSFER можливий лише у XSPI_OCTO_MODE
 	// 	data-rate = <XSPI_STR_TRANSFER>;
-	// 	four-byte-opcodes;
-	// 	status = "okay";
+	// 	// four-byte-opcodes;
+	// 	jedec-id = [ef 40 18];
+	// 	writeoc = "PP_1_1_4";
+	// 	requires-ulbpr;
 
 	// 	#address-cells = <1>;
 	// 	#size-cells = <1>;
@@ -914,7 +917,7 @@ zephyr_udc0: &usb {
 	// 			#address-cells = <1>;
 	// 			#size-cells = <1>;
 
-	// 			storage_partition_ex: partition@0 {
+	// 			storage_partition: partition@0 {
 	// 				// label = "storage";
 	// 				label = "nor";
 	// 				reg = <0x00000000 DT_SIZE_M(16)>;
@@ -923,50 +926,36 @@ zephyr_udc0: &usb {
 	// 	};
 	// };
 
-	w25q128jv: w25q128jv@0 {
+	w25q128jv: xspi-nor-flash@0 {
 		status="okay";
-		// compatible = "st,stm32-qspi-nor";
-		// compatible = "jedec,spi-nor";
 		compatible = "st,stm32-xspi-nor";
 		reg = <0>;
 		size = <DT_SIZE_M(128)>;	// Mbits!
 		spi-bus-width = <XSPI_QUAD_MODE>;
+		// Схоже шо XSPI_DTR_TRANSFER можливий лише у XSPI_OCTO_MODE
 		// data-rate = <XSPI_DTR_TRANSFER>;
 		data-rate = <XSPI_STR_TRANSFER>;
-		// size = <DT_SIZE_M(128)>;
-		// writeoc = "pp4io";
-		// readoc = "read4io";
 		ospi-max-frequency = <DT_FREQ_M(133)>;
-		// ospi-max-frequency = <DT_FREQ_M(50)>;
-		// sck-frequency = <DT_FREQ_M(133)>;
 		// W25Q128JV-IN/IQ/JQ = 0xEF 40 18
 		// W25Q128JV-IM*/JM* = 0xEF 70 18
 		jedec-id = [ef 40 18];
 		// jedec-id = [ef 70 18];
 
 		writeoc = "PP_1_1_4";
-
 		requires-ulbpr;
 
 		// four-byte-opcodes;
 
-		// has-dpd;
-		// t-enter-dpd = <3000>;
-		// t-exit-dpd = <3000>;
+		partitions {
+			compatible = "fixed-partitions";
+			#address-cells = <1>;
+			#size-cells = <1>;
 
-		// erase-block-size = <4096>;
-		// write-block-size = <1>;
-
-		// partitions {
-		// 	compatible = "fixed-partitions";
-		// 	#address-cells = <1>;
-		// 	#size-cells = <1>;
-
-		// 	storage_partition_ex: partition@0 {
-		// 		label = "storage_ex";
-		// 		reg = <0x00000000 DT_SIZE_M(16)>;
-		// 	};
-		// };
+			extflash_partition: partition@0 {
+				label = "ext_storage";
+				reg = <0x00000000 DT_SIZE_M(16)>;
+			};
+		};
 
 		// partitions {
 		//	compatible = "fixed-partitions";
