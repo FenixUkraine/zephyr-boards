@@ -1,7 +1,7 @@
 /dts-v1/;
 #include "fxa500_03-common.dtsi"
-// #include "fxa500_03-flash-memmapped.dtsi"
-#include "fxa500_03-flash-as-spi.dtsi"
+#include "fxa500_03-flash-memmapped.dtsi"
+// #include "fxa500_03-flash-as-spi.dtsi"
 
 
 / {
@@ -42,13 +42,14 @@
 
 		slot0_partition: partition@10000 {
 			label = "image-0";
-			reg = <0x00010000 DT_SIZE_K(960)>;
+			// reg = <0x00010000 DT_SIZE_K(960)>;
+            reg = <0x00010000 DT_SIZE_K(1920)>;
 		};
 
-		slot1_partition: partition@100000 {
-			label = "image-1";
-			reg = <0x00100000 DT_SIZE_K(960)>;
-		};
+		// slot1_partition: partition@100000 {
+		// 	label = "image-1";
+		// 	reg = <0x00100000 DT_SIZE_K(960)>;
+		// };
 
 		storage_partition: partition@1f0000 {
 			label = "storage";

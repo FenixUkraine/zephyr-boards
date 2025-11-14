@@ -31,13 +31,39 @@
 				#address-cells = <1>;
 				#size-cells = <1>;
 
-				extflash_partition: partition@0 {
-					// label = "storage";
-					// label = "nor";
+				// Нам треба slot1 розміром як slot0
+				slot1_partition: partition@0 {
+					label = "image-1";
+					reg = <0x00000000 DT_SIZE_K(1920)>;
+				};
+
+				// У нас різні розміри сторінок. У процесора 8КБайт, а у памʼяті - 4КБайт.
+				// Тому нам підійде BOOT_SWAP_USING_SCRATCH ну або BOOT_UPGRADE_ONLY
+
+				scratch_partition: partition@1e0000 {
+					label = "image-scratch";
+					reg = <0x001e0000 DT_SIZE_K(1920)>; /* Можливо не треба його робити як прошивка, достатньо 8KB або 16 */
+				};
+
+				// Все інше виділяємо під extflash_partition
+				extflash_partition: partition@3c0000 {
 					label = "ext_storage";
-					reg = <0x00000000 DT_SIZE_M(16)>;
+					reg = <0x003c0000 (DT_SIZE_M(16) - DT_SIZE_K(1920) - DT_SIZE_K(1920))>;
 				};
 			};
+
+			// partitions {
+			// 	compatible = "fixed-partitions";
+			// 	#address-cells = <1>;
+			// 	#size-cells = <1>;
+
+			// 	extflash_partition: partition@0 {
+			// 		// label = "storage";
+			// 		// label = "nor";
+			// 		label = "ext_storage";
+			// 		reg = <0x00000000 DT_SIZE_M(16)>;
+			// 	};
+			// };
 		};
 	};
 };
