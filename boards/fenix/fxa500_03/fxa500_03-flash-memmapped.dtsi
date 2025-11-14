@@ -39,16 +39,26 @@
 
 				// У нас різні розміри сторінок. У процесора 8КБайт, а у памʼяті - 4КБайт.
 				// Тому нам підійде BOOT_SWAP_USING_SCRATCH ну або BOOT_UPGRADE_ONLY
+				// Для цього треба розділ scratch_partition
+				// Мікросхема W25Q128JV має декілька команд на стирання
+				// Немає впевненості шо драйвер їх автоматично застосує.
+				// Можна буде глянути через CONFIG_FLASH_LOG_LEVEL_DBG=y
+				// - Стирання сектора 4КB - 20h
+				// - Стирання блоку 32KB - 52h
+				// - Стирання блоку 64KB - D8h
 
 				scratch_partition: partition@1e0000 {
 					label = "image-scratch";
-					reg = <0x001e0000 DT_SIZE_K(1920)>; /* Можливо не треба його робити як прошивка, достатньо 8KB або 16 */
+					// reg = <0x001e0000 DT_SIZE_K(1920)>; /* Можливо не треба його робити як прошивка, достатньо 8KB або 16 */
+					reg = <0x001e0000 DT_SIZE_K(64)>;
 				};
 
 				// Все інше виділяємо під extflash_partition
-				extflash_partition: partition@3c0000 {
+				// extflash_partition: partition@3c0000 {  /* Якшо scratch_partition 1920КБ */
+				extflash_partition: partition@1f0000 { /* Якшо scratch_partition 64КБ */
 					label = "ext_storage";
-					reg = <0x003c0000 (DT_SIZE_M(16) - DT_SIZE_K(1920) - DT_SIZE_K(1920))>;
+					// reg = <0x003c0000 (DT_SIZE_M(16) - DT_SIZE_K(1920) - DT_SIZE_K(1920))>;
+					reg = <0x001f0000 (DT_SIZE_M(16) - DT_SIZE_K(1920) - DT_SIZE_K(64))>;
 				};
 			};
 
