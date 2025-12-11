@@ -12,6 +12,7 @@
 		zephyr,flash = &flash0;
 		zephyr,flash-controller = &flash;
 		zephyr,code-partition = &slot0_partition;
+		zephyr,settings-partition = <&storage_partition>;
 	};
 
 	fstab {
