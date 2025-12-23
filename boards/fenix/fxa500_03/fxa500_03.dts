@@ -1,5 +1,6 @@
 /dts-v1/;
 #include "fxa500_03-common.dtsi"
+#include "fxa500_03-adc.dtsi"
 #include "fxa500_03-flash-memmapped.dtsi"
 // #include "fxa500_03-flash-as-spi.dtsi"
 

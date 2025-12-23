@@ -333,9 +333,19 @@
 	div-m = <2>;	// 8MHx / 2 = 4MHz
 	mul-n = <120>;	// 4MHz * 120 = 480MHz
 	div-p = <2>;	// 480MHz / 2 = 240MHz (->SYSCLK)
-	div-q = <3>;	// 480MHz / 3 = 160MHz (->FDCAN,...?)
+	div-q = <3>;	// 480MHz / 3 = 160MHz (->FDCAN,...? old)
 	div-r = <2>;	// 480MHz / 2 = 80MHz
 	clocks = <&clk_hse>;	// HSE = 8MHz
+	status = "okay";
+};
+
+&pll2 {
+	div-m = <2>;
+	mul-n = <120>;
+	div-p = <2>;
+	div-q = <3>;	// 160MHz -> FDCAN
+	div-r = <2>;
+	clocks = <&clk_hse>;
 	status = "okay";
 };
 
@@ -373,126 +383,6 @@ zephyr_udc0: &usb {
 };
 
 
-&adc1 {
-	#address-cells = <1>;
-	#size-cells = <0>;
-
-	clocks = <&rcc STM32_CLOCK(AHB2, 10)>,
-		 <&rcc STM32_SRC_HCLK ADCDAC_SEL(0)>;
-	pinctrl-0 = <
-		&adc1_inp0_pa0
-		&adc1_inp1_pa1
-		&adc1_inp11_pc1
-		&adc1_inp12_pc2
-		&adc1_inp13_pc3
-		&adc1_inp14_pa2
-		&adc1_inp15_pa3
-		&adc1_inp18_pa4
-		&adc1_inp19_pa5
-	>;
-	pinctrl-names = "default";
-	clock-names = "adcx", "adc_ker";
-	st,adc-clock-source = "ASYNC";
-	st,adc-prescaler = <6>;
-	status = "okay";
-
-	channel@11 {
-		reg = <11>;
-		zephyr,gain = "ADC_GAIN_1";
-		zephyr,reference = "ADC_REF_INTERNAL";
-		zephyr,acquisition-time = <ADC_ACQ_TIME_DEFAULT>;
-		zephyr,resolution = <12>;
-	};
-
-	channel@12 {
-		reg = <12>;
-		zephyr,gain = "ADC_GAIN_1";
-		zephyr,reference = "ADC_REF_INTERNAL";
-		zephyr,acquisition-time = <ADC_ACQ_TIME_DEFAULT>;
-		zephyr,resolution = <12>;
-	};
-
-	channel@13 {
-		reg = <13>;
-		zephyr,gain = "ADC_GAIN_1";
-		zephyr,reference = "ADC_REF_INTERNAL";
-		zephyr,acquisition-time = <ADC_ACQ_TIME_DEFAULT>;
-		zephyr,resolution = <12>;
-	};
-
-	channel@0 {
-		reg = <0>;
-		zephyr,gain = "ADC_GAIN_1";
-		zephyr,reference = "ADC_REF_INTERNAL";
-		zephyr,acquisition-time = <ADC_ACQ_TIME_DEFAULT>;
-		zephyr,resolution = <12>;
-	};
-
-	channel@1 {
-		reg = <1>;
-		zephyr,gain = "ADC_GAIN_1";
-		zephyr,reference = "ADC_REF_INTERNAL";
-		zephyr,acquisition-time = <ADC_ACQ_TIME_DEFAULT>;
-		zephyr,resolution = <12>;
-	};
-
-	channel@14 {
-		reg = <14>;
-		zephyr,gain = "ADC_GAIN_1";
-		zephyr,reference = "ADC_REF_INTERNAL";
-		zephyr,acquisition-time = <ADC_ACQ_TIME_DEFAULT>;
-		zephyr,resolution = <12>;
-	};
-
-	channel@19 {
-		reg = <19>;
-		zephyr,gain = "ADC_GAIN_1";
-		zephyr,reference = "ADC_REF_INTERNAL";
-		zephyr,acquisition-time = <ADC_ACQ_TIME_DEFAULT>;
-		zephyr,resolution = <12>;
-	};
-
-	channel@18 {
-		reg = <18>;
-		zephyr,gain = "ADC_GAIN_1";
-		zephyr,reference = "ADC_REF_INTERNAL";
-		zephyr,acquisition-time = <ADC_ACQ_TIME_DEFAULT>;
-		zephyr,resolution = <12>;
-	};
-
-	channel@15 {
-		reg = <15>;
-		zephyr,gain = "ADC_GAIN_1";
-		zephyr,reference = "ADC_REF_INTERNAL";
-		zephyr,acquisition-time = <ADC_ACQ_TIME_DEFAULT>;
-		zephyr,resolution = <12>;
-	};
-
-
-};
-
-&adc2 {
-	#address-cells = <1>;
-	#size-cells = <0>;
-
-	clocks = <&rcc STM32_CLOCK(AHB2, 10)>,
-		 <&rcc STM32_SRC_HCLK ADCDAC_SEL(0)>;
-	pinctrl-0 = <&adc2_inp10_pc0>;
-	pinctrl-names = "default";
-	clock-names = "adcx", "adc_ker";
-	st,adc-clock-source = "ASYNC";
-	st,adc-prescaler = <6>;
-	status = "okay";
-
-	channel@10 {
-		reg = <10>;
-		zephyr,gain = "ADC_GAIN_1";
-		zephyr,reference = "ADC_REF_INTERNAL";
-		zephyr,acquisition-time = <ADC_ACQ_TIME_DEFAULT>;
-		zephyr,resolution = <12>;
-	};
-
-};
 
 
 //&usb {
@@ -507,21 +397,37 @@ zephyr_udc0: &usb {
 &fdcan1 {
 	pinctrl-0 = <&fdcan1_rx_pb8 &fdcan1_tx_pb9>;
 	pinctrl-names = "default";
+	// clocks = <&rcc STM32_CLOCK(APB1_2, 9)>,
+	// 	 <&rcc STM32_SRC_PLL1_Q FDCAN_SEL(1)>;
 	clocks = <&rcc STM32_CLOCK(APB1_2, 9)>,
-		 <&rcc STM32_SRC_PLL1_Q FDCAN_SEL(1)>;
-	clk-divider = <1>;
+		 <&rcc STM32_SRC_PLL2_Q FDCAN_SEL(2)>;
+	clk-divider = <1>;	// 160MГц / clk-divider
 	phys = <&transceiver1>;
+	// bitrate = <500000>;
+	// sample-point = <875>;
 	status = "okay";
+
+	/* Перший CAN починається з 0x0.
+	   Формат: <offset std_filt ext_filt rx0 rx1 rx_buf tx_evt tx_buf> */
+	// bosch,mram-cfg = <0x0 28 8 3 3 0 3 3>;
 };
 
 &fdcan2 {
 	pinctrl-0 = <&fdcan2_rx_pb5 &fdcan2_tx_pb6>;
 	pinctrl-names = "default";
+	// clocks = <&rcc STM32_CLOCK(APB1_2, 9)>,
+	// 	 <&rcc STM32_SRC_PLL1_Q FDCAN_SEL(1)>;
 	clocks = <&rcc STM32_CLOCK(APB1_2, 9)>,
-		 <&rcc STM32_SRC_PLL1_Q FDCAN_SEL(1)>;
-	clk-divider = <1>;
+		 <&rcc STM32_SRC_PLL2_Q FDCAN_SEL(2)>;
+	clk-divider = <1>;  // 160MГц / clk-divider
 	phys = <&transceiver2>;
+	// bitrate = <500000>;
+	// sample-point = <875>;
 	status = "okay";
+	/* Другий CAN має починатися після того, як закінчиться пам'ять першого.
+	   Конфігурація вище займає приблизно 848 байт.
+	   Зміщення 0x400 (1024 байти) — це безпечний варіант із запасом. */
+	// bosch,mram-cfg = <0x400 28 8 3 3 0 3 3>;
 };
 
 
