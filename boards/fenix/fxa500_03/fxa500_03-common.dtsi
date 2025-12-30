@@ -59,14 +59,14 @@
 
 	transceiver1: can-phy1 {
 		compatible = "microchip,mcp2562fd", "can-transceiver-gpio";
-		standby-gpios = <&gpiob 7 GPIO_ACTIVE_LOW>;
+		standby-gpios = <&gpioe 0 GPIO_ACTIVE_HIGH>;
 		max-bitrate = <5000000>;
 		#phy-cells = <0>;
 	};
 
 	transceiver2: can-phy2 {
 		compatible = "microchip,mcp2562fd", "can-transceiver-gpio";
-		standby-gpios = <&gpioe 0 GPIO_ACTIVE_LOW>;
+		standby-gpios = <&gpiob 7 GPIO_ACTIVE_HIGH>;
 		max-bitrate = <5000000>;
 		#phy-cells = <0>;
 	};
@@ -397,37 +397,29 @@ zephyr_udc0: &usb {
 &fdcan1 {
 	pinctrl-0 = <&fdcan1_rx_pb8 &fdcan1_tx_pb9>;
 	pinctrl-names = "default";
-	// clocks = <&rcc STM32_CLOCK(APB1_2, 9)>,
-	// 	 <&rcc STM32_SRC_PLL1_Q FDCAN_SEL(1)>;
 	clocks = <&rcc STM32_CLOCK(APB1_2, 9)>,
-		 <&rcc STM32_SRC_PLL2_Q FDCAN_SEL(2)>;
+		 <&rcc STM32_SRC_PLL1_Q FDCAN_SEL(1)>;
+	// clocks = <&rcc STM32_CLOCK(APB1_2, 9)>,
+	// 	 <&rcc STM32_SRC_PLL2_Q FDCAN_SEL(2)>;
 	clk-divider = <1>;	// 160MГц / clk-divider
 	phys = <&transceiver1>;
 	// bitrate = <500000>;
 	// sample-point = <875>;
 	status = "okay";
-
-	/* Перший CAN починається з 0x0.
-	   Формат: <offset std_filt ext_filt rx0 rx1 rx_buf tx_evt tx_buf> */
-	// bosch,mram-cfg = <0x0 28 8 3 3 0 3 3>;
 };
 
 &fdcan2 {
 	pinctrl-0 = <&fdcan2_rx_pb5 &fdcan2_tx_pb6>;
 	pinctrl-names = "default";
-	// clocks = <&rcc STM32_CLOCK(APB1_2, 9)>,
-	// 	 <&rcc STM32_SRC_PLL1_Q FDCAN_SEL(1)>;
 	clocks = <&rcc STM32_CLOCK(APB1_2, 9)>,
-		 <&rcc STM32_SRC_PLL2_Q FDCAN_SEL(2)>;
+		 <&rcc STM32_SRC_PLL1_Q FDCAN_SEL(1)>;
+	// clocks = <&rcc STM32_CLOCK(APB1_2, 9)>,
+	// 	 <&rcc STM32_SRC_PLL2_Q FDCAN_SEL(2)>;
 	clk-divider = <1>;  // 160MГц / clk-divider
 	phys = <&transceiver2>;
 	// bitrate = <500000>;
 	// sample-point = <875>;
 	status = "okay";
-	/* Другий CAN має починатися після того, як закінчиться пам'ять першого.
-	   Конфігурація вище займає приблизно 848 байт.
-	   Зміщення 0x400 (1024 байти) — це безпечний варіант із запасом. */
-	// bosch,mram-cfg = <0x400 28 8 3 3 0 3 3>;
 };
 
 
