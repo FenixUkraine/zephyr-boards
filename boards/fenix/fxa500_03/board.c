@@ -47,3 +47,29 @@ static int board_init_lte_power(void)
 
 SYS_INIT(board_init_lte_power, POST_KERNEL, CONFIG_MODEM_CELLULAR_PREINIT_PRIORITY);
 #endif /* CONFIG_MODEM_CELLULAR */
+
+#if defined(CONFIG_GNSS)
+
+struct gpio_dt_spec gps_power = GPIO_DT_SPEC_GET_OR(DT_ALIAS(gnss), gps_pwr_gpios, {0});
+
+static int board_init_gps_power(void)
+{
+    int ret = 0;
+    if (!gpio_is_ready_dt(&gps_power)) {
+        LOG_DBG("GPS power GPIO not defined, skipping");
+        return 0;
+    }
+    ret = gpio_pin_configure_dt(&gps_power, GPIO_OUTPUT_ACTIVE);
+	if (ret < 0) {
+		LOG_ERR("Unable to configure GPS power GPIO");
+		return 0;
+	}
+
+	k_msleep(2);    // На всяк випадок є затримка.
+
+	return 0;
+}
+
+SYS_INIT(board_init_gps_power, POST_KERNEL, CONFIG_BOARD_FXA500_03_GPS_POWER_INIT_PRIORITY);
+
+#endif /* CONFIG_GNSS */

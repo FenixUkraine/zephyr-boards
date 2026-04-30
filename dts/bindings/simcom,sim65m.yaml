@@ -1,0 +1,13 @@
+# Copyright (C) 2025 Olivier Lalonde
+# SPDX-License-Identifier: Apache-2.0
+
+description: Simcom SIM65M GPS driver
+
+compatible: "simcom,sim65m"
+
+include: gnss-nmea-generic.yaml
+
+properties:
+  gps-pwr-gpios:
+    type: phandle-array
+    required: true

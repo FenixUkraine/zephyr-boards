@@ -30,4 +30,17 @@ config MODEM_CELLULAR_PREINIT_PRIORITY
 
 endif # MODEM_CELLULAR
 
+if GNSS
+
+config BOARD_FXA500_03_GPS_POWER_INIT_PRIORITY
+	int "GPS modem driver initialization priority"
+	default 79
+	range 0 99
+	help
+	  Driver pre-initialization priority for gnss modem drivers.
+	  Defaults to less than POST_KERNEL/GNSS_INIT_PRIORITY (80).
+	  But greater than GPIO/Driver.
+
+endif # GNSS
+
 endif

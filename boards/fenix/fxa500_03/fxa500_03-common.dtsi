@@ -47,6 +47,8 @@
 		die-temp1 = &digi_die_temp;
 		volt-sensor0 = &vref;
 		volt-sensor1 = &vbat;
+
+		gnss = &simcom_sim65m;
 	};
 
 	ext_flash_mem: memory@90000000 {
@@ -702,6 +704,22 @@ zephyr_udc0: &usb {
         max-wait-percent = <200>;
     };
 };
+
+// GPS
+&uart7 {
+	pinctrl-0 = <&uart7_tx_pb4 &uart7_rx_pb3>;
+	tx-rx-swap;
+	pinctrl-names = "default";
+	current-speed = <9600>;
+	status = "okay";
+
+	simcom_sim65m: gnss-nmea-generic {
+		status = "okay";
+		compatible = "simcom,sim65m", "gnss-nmea-generic";
+		gps-pwr-gpios = <&gpiod 7 (GPIO_ACTIVE_HIGH)>;	// GPS power
+	};
+};
+
 
 
 // Used for BLE (AT?)
